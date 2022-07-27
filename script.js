@@ -1,7 +1,5 @@
 "use strict";
 
-import { startConfetti, stopConfetti, removeConfetti } from "./confetti.js";
-
 const playerScoreEl = document.getElementById("playerScore");
 const playerChoiceEl = document.getElementById("playerChoice");
 const computerScoreEl = document.getElementById("computerScore");
@@ -36,8 +34,10 @@ let computerChoice = "";
 
 // Reset all 'selected' icons
 const resetSelected = () => {
-  stopConfetti();
-  removeConfetti();
+  import("./confetti.js").then((module) => {
+    module.stopConfetti();
+    module.removeConfetti();
+  });
   allGameIcons.forEach((icon) => {
     icon.classList.remove("selected");
   });
@@ -102,7 +102,9 @@ const updateScore = (playerChoice) => {
   if (playerChoice === computerChoice) {
     resultText.textContent = "Tied!";
   } else if (choices[playerChoice].defeats.includes(computerChoice)) {
-    startConfetti();
+    import("./confetti.js").then((module) => {
+      module.startConfetti();
+    });
     resultText.textContent = "You Won!";
     playerScoreNumber++;
     playerScoreEl.textContent = playerScoreNumber;
